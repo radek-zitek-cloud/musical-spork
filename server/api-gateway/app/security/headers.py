@@ -1,9 +1,14 @@
 """Security headers middleware."""
 
-class SecurityHeadersMiddleware:
+from fastapi import Request
+from starlette.middleware.base import BaseHTTPMiddleware
+
+
+class SecurityHeadersMiddleware(BaseHTTPMiddleware):
     """Security headers middleware stub."""
     
-    def __init__(self, app):
-        """Initialize middleware."""
-        # TODO: Implement security headers middleware
-        pass
+    async def dispatch(self, request: Request, call_next):
+        """Process request and response."""
+        # TODO: Implement security headers logic
+        response = await call_next(request)
+        return response

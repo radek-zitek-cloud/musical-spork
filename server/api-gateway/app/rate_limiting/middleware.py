@@ -1,9 +1,14 @@
 """Rate limiting middleware."""
 
-class RateLimitMiddleware:
+from fastapi import Request
+from starlette.middleware.base import BaseHTTPMiddleware
+
+
+class RateLimitMiddleware(BaseHTTPMiddleware):
     """Rate limiting middleware stub."""
     
-    def __init__(self, app):
-        """Initialize middleware."""
-        # TODO: Implement rate limiting middleware
-        pass
+    async def dispatch(self, request: Request, call_next):
+        """Process request and response."""
+        # TODO: Implement rate limiting logic
+        response = await call_next(request)
+        return response

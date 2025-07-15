@@ -6,7 +6,7 @@ This directory contains the Universal API Gateway implementation based on Python
 
 ## Folder Structure
 
-```
+```plaintext
 server/api-gateway/
 ├── README.md                           # This file - project overview and setup
 ├── requirements.txt                    # Python dependencies
@@ -157,23 +157,27 @@ server/api-gateway/
 ## Key Design Principles
 
 ### 1. **Modular Architecture**
+
 - Each core functionality (auth, routing, caching, etc.) is in its own module
 - Clear separation of concerns with well-defined interfaces
 - Easy to test, maintain, and extend individual components
 
 ### 2. **FastAPI Best Practices**
+
 - Pydantic models for all data validation and serialization
 - Dependency injection for shared resources (Redis, HTTP clients)
 - Async/await throughout for high performance
 - Automatic OpenAPI documentation generation
 
 ### 3. **Production Ready**
+
 - Comprehensive monitoring and observability
 - Circuit breakers and error handling
 - Security middleware and validation
 - Docker containerization and orchestration
 
 ### 4. **Developer Experience**
+
 - Clear folder structure and naming conventions
 - Comprehensive test coverage
 - Development scripts and utilities
@@ -182,17 +186,20 @@ server/api-gateway/
 ## Quick Start
 
 1. **Install Dependencies**
+
    ```bash
    pip install -r requirements.txt
    ```
 
 2. **Set Up Environment**
+
    ```bash
    cp .env.example .env
    # Edit .env with your configuration
    ```
 
 3. **Run Development Server**
+
    ```bash
    uvicorn main:app --reload --host 0.0.0.0 --port 8000
    ```

@@ -1,7 +1,7 @@
 """Application configuration management."""
 
-from pydantic_settings import BaseSettings
-from pydantic import Field, validator
+from pydantic_settings import BaseSettings, SettingsConfigDict
+from pydantic import Field, field_validator
 from typing import List, Optional
 from enum import Enum
 import os
@@ -37,9 +37,9 @@ class Settings(BaseSettings):
     jwt_secret_key: str = Field(..., min_length=32, description="JWT secret key")
     jwt_algorithm: str = Field(default="HS256", description="JWT algorithm")
     jwt_expire_minutes: int = Field(default=30, description="JWT expiration time in minutes")
-    allowed_hosts: List[str] = Field(
-        default=["localhost", "127.0.0.1", "*.musical-spork.com"],
-        description="Allowed hosts for CORS"
+    allowed_hosts_str: str = Field(
+        default="localhost,127.0.0.1,*.musical-spork.com",
+        description="Allowed hosts for CORS (comma-separated)"
     )
     
     # Database settings
@@ -83,18 +83,25 @@ class Settings(BaseSettings):
     health_check_interval: int = Field(default=30, description="Health check interval in seconds")
     health_check_timeout: int = Field(default=10, description="Health check timeout in seconds")
     
-    @validator("jwt_secret_key")
+    @field_validator("jwt_secret_key")
+    @classmethod
     def validate_jwt_secret(cls, v):
         """Validate JWT secret key length."""
         if len(v) < 32:
             raise ValueError("JWT secret key must be at least 32 characters long")
         return v
     
-    class Config:
-        """Pydantic configuration."""
-        env_file = ".env"
-        env_file_encoding = "utf-8"
-        case_sensitive = False
+    @property
+    def allowed_hosts(self) -> List[str]:
+        """Get allowed hosts as a list."""
+        return [host.strip() for host in self.allowed_hosts_str.split(",")]
+    
+    model_config = SettingsConfigDict(
+        env_file=".env",
+        env_file_encoding="utf-8",
+        case_sensitive=False,
+        extra="ignore"
+    )
 
 
 # Global settings instance

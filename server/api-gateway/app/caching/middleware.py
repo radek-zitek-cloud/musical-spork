@@ -1,9 +1,14 @@
 """Cache middleware."""
 
-class CacheMiddleware:
+from fastapi import Request
+from starlette.middleware.base import BaseHTTPMiddleware
+
+
+class CacheMiddleware(BaseHTTPMiddleware):
     """Cache middleware stub."""
     
-    def __init__(self, app):
-        """Initialize middleware."""
-        # TODO: Implement cache middleware
-        pass
+    async def dispatch(self, request: Request, call_next):
+        """Process request and response."""
+        # TODO: Implement cache logic
+        response = await call_next(request)
+        return response
